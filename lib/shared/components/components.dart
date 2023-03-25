@@ -31,15 +31,39 @@ Widget defaultForm(
         return null;
       },
     );
-Widget defaultSubmit({required String text, required Function() onPressed}) =>
+// Widget defaultSubmit({required String text, required Function() onPressed}) =>
+//     Container(
+//       padding: const EdgeInsetsDirectional.symmetric(horizontal: 10),
+//       // decoration: BoxDecoration(color: Colors.blue),
+//       width: double.infinity,
+//       child: MaterialButton(
+//         color: Colors.blue,
+//         onPressed: onPressed,
+//         child: Text(text),
+//       ),
+//     );
+Widget defaultSubmit({
+  double width = double.infinity,
+  Color background = Colors.blue,
+  bool isUpperCase = true,
+  double radius = 3.0,
+  Function()? onPressed,
+  required String text,
+}) =>
     Container(
-      padding: const EdgeInsetsDirectional.symmetric(horizontal: 10),
-      // decoration: BoxDecoration(color: Colors.blue),
-      width: double.infinity,
+      width: width,
+      height: 50.0,
       child: MaterialButton(
-        color: Colors.blue,
         onPressed: onPressed,
-        child: Text(text),
+        child: Text(
+          isUpperCase ? text.toUpperCase() : text,
+          style: const TextStyle(
+            color: Colors.white,
+          ),
+        ),
+      ),
+      decoration: BoxDecoration(
+        color: background,
       ),
     );
 
