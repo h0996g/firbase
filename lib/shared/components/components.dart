@@ -95,3 +95,10 @@ Color choseToastColor(ToastStates state) {
   }
   return color;
 }
+
+void navigatAndReturn({required context, required page}) =>
+    Navigator.push(context, MaterialPageRoute(builder: (context) => page));
+
+void navigatAndFinish({required context, required page}) =>
+    Navigator.pushAndRemoveUntil(context,
+        MaterialPageRoute(builder: (context) => page), (route) => false);

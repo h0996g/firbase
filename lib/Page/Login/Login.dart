@@ -108,10 +108,8 @@ class Login extends StatelessWidget {
                       Center(
                         child: TextButton(
                             onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (contex) => Register()));
+                              navigatAndReturn(
+                                  context: context, page: Register());
                             },
                             child: const Text(
                               'Register',

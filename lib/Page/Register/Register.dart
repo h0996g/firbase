@@ -138,11 +138,8 @@ class Register extends StatelessWidget {
                         Center(
                           child: TextButton(
                               onPressed: () {
-                                Navigator.pushAndRemoveUntil(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => Login()),
-                                    (route) => false);
+                                navigatAndFinish(
+                                    context: context, page: Login());
                               },
                               child: const Text(
                                 'Login',
