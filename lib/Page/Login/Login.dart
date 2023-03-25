@@ -1,8 +1,13 @@
+import 'dart:io';
+
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:firbase/Page/Login/cubit/login_cubit.dart';
 import 'package:firbase/Page/Login/cubit/login_state.dart';
+import 'package:firbase/layout/home/Home.dart';
 import 'package:firbase/shared/components/components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../Register/Register.dart';
 
@@ -62,9 +67,6 @@ class Login extends StatelessWidget {
                           suffixIcon: IconButton(
                               onPressed: () {
                                 _loginCubit.showPassword();
-                                // setState(() {
-                                //   isvisibility = !isvisibility;
-                                // });
                               },
                               icon: _loginCubit.isvisibility
                                   ? const Icon(Icons.visibility_off)
@@ -83,11 +85,25 @@ class Login extends StatelessWidget {
                         height: 20,
                       ),
                       Center(
-                        child: defaultSubmit(
-                            text: "Login",
-                            onPressed: () {
-                              if (formkey.currentState!.validate()) {}
-                            }),
+                        child: ConditionalBuilder(
+                          builder: (BuildContext context) {
+                            return defaultSubmit(
+                                text: "Login",
+                                onPressed: () {
+                                  if (formkey.currentState!.validate()) {
+                                    _loginCubit.login(
+                                        email: emailController.text,
+                                        password: passwordController.text);
+                                  }
+                                });
+                          },
+                          condition: state is! LodinLoginState,
+                          fallback: (BuildContext context) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          },
+                        ),
                       ),
                       Center(
                         child: TextButton(
@@ -106,7 +122,26 @@ class Login extends StatelessWidget {
                 )),
           );
         },
-        listener: (context, state) {},
+        listener: (context, state) {
+          if (state is SignInWithEmailAndPasswordGood) {
+            // await Fluttertoast.showToast(
+            //     msg: "Success Login",
+            //     toastLength: Toast.LENGTH_SHORT,
+            //     gravity: ToastGravity.BOTTOM,
+            //     timeInSecForIosWeb: 1,
+            //     backgroundColor: Colors.green,
+            //     textColor: Colors.white,
+            //     fontSize: 16.0);
+            showToast(msg: "Login Successful", state: ToastStates.success);
+            sleep(const Duration(seconds: 1));
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => const Home()),
+                (route) => false);
+          } else if (state is SignInWithEmailAndPasswordBad) {
+            showToast(msg: state.err, state: ToastStates.error);
+          }
+        },
       ),
     );
   }

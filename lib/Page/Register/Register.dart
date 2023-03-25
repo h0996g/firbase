@@ -4,7 +4,6 @@ import 'package:firbase/Page/Register/cubit/register_cubit.dart';
 import 'package:firbase/Page/Register/cubit/register_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../shared/components/components.dart';
 
@@ -18,7 +17,6 @@ class Register extends StatelessWidget {
   final nameController = TextEditingController();
   final phoneController = TextEditingController();
 // V
-  // bool isvisibility = false;
 
   @override
   Widget build(BuildContext context) {
@@ -160,23 +158,9 @@ class Register extends StatelessWidget {
         },
         listener: (BuildContext context, Object? state) {
           if (state is CreateUserWithEmailAndPasswordGood) {
-            Fluttertoast.showToast(
-                msg: "Succesffuly",
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.CENTER,
-                timeInSecForIosWeb: 1,
-                backgroundColor: Colors.green,
-                textColor: Colors.white,
-                fontSize: 16.0);
+            showToast(msg: "Succesffuly", state: ToastStates.success);
           } else if (state is CreateUserWithEmailAndPasswordBad) {
-            Fluttertoast.showToast(
-                msg: state.error,
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.CENTER,
-                timeInSecForIosWeb: 1,
-                backgroundColor: Colors.red,
-                textColor: Colors.white,
-                fontSize: 16.0);
+            showToast(msg: "Faild", state: ToastStates.error);
           }
         },
       ),

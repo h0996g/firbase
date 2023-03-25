@@ -16,7 +16,6 @@ class RegisterCubit extends Cubit<RegisterState> {
   }
 
   void register({required String email, required String password}) {
-    print('dkhol le register');
     emit(LodinRegisterState());
     FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: email, password: password)
