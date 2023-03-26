@@ -14,6 +14,7 @@ class Register extends StatelessWidget {
   final formkey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final addressController = TextEditingController();
   final nameController = TextEditingController();
   final phoneController = TextEditingController();
 // V
@@ -91,6 +92,22 @@ class Register extends StatelessWidget {
                           height: 20,
                         ),
                         defaultForm(
+                            type: TextInputType.text,
+                            controler: addressController,
+                            textInputAction: TextInputAction.next,
+                            prefixIcon:
+                                const Icon(Icons.location_city_outlined),
+                            obscureText: false,
+                            labels: "Address",
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return "Address Must Be Not Empty";
+                              }
+                            }),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        defaultForm(
                             onFieldSubmitted: (value) {
                               if (formkey.currentState!.validate()) {}
                             },
@@ -123,7 +140,10 @@ class Register extends StatelessWidget {
                                     if (formkey.currentState!.validate()) {
                                       _registerCubit.register(
                                           email: emailController.text,
-                                          password: passwordController.text);
+                                          password: passwordController.text,
+                                          address: addressController.text,
+                                          name: nameController.text,
+                                          phone: phoneController.text);
                                     }
                                   });
                             },
@@ -154,9 +174,9 @@ class Register extends StatelessWidget {
           );
         },
         listener: (BuildContext context, Object? state) {
-          if (state is CreateUserWithEmailAndPasswordGood) {
+          if (state is CreateUserGood) {
             showToast(msg: "Succesffuly", state: ToastStates.success);
-          } else if (state is CreateUserWithEmailAndPasswordBad) {
+          } else if (state is CreateUserBad) {
             showToast(msg: "Faild", state: ToastStates.error);
           }
         },
