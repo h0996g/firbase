@@ -5,10 +5,12 @@ import 'package:firbase/Page/Login/Login.dart';
 import 'package:firbase/Page/Register/cubit/register_cubit.dart';
 import 'package:firbase/Page/Register/cubit/register_state.dart';
 import 'package:firbase/layout/home/Home.dart';
+import 'package:firbase/shared/helper/cashHelper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../shared/components/components.dart';
+import '../../shared/components/constants.dart';
 
 class Register extends StatelessWidget {
   Register({Key? key}) : super(key: key);
@@ -181,7 +183,10 @@ class Register extends StatelessWidget {
           if (state is CreateUserGood) {
             showToast(msg: "Succesffuly", state: ToastStates.success);
             // sleep(const Duration(seconds: 1));
-            navigatAndFinish(context: context, page: const Home());
+            CachHelper.putcache(key: 'uid', value: state.uid).then((value) {
+              UID = CachHelper.getData(key: 'uid');
+              navigatAndFinish(context: context, page: const Home());
+            });
           } else if (state is CreateUserBad) {
             showToast(msg: "Faild", state: ToastStates.error);
           }

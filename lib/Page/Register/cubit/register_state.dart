@@ -14,7 +14,11 @@ class CreateUserWithEmailAndPasswordBad extends RegisterState {
   CreateUserWithEmailAndPasswordBad(this.error);
 }
 
-class CreateUserGood extends RegisterState {}
+class CreateUserGood extends RegisterState {
+  final uid;
+
+  CreateUserGood(this.uid);
+}
 
 class CreateUserBad extends RegisterState {
   final String error;

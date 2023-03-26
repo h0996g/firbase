@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import '../../shared/components/constants.dart';
 import '../Register/Register.dart';
 
 class Login extends StatelessWidget {
@@ -134,6 +135,9 @@ class Login extends StatelessWidget {
             showToast(msg: "Login Successful", state: ToastStates.success);
             sleep(const Duration(seconds: 1));
             CachHelper.putcache(key: "uid", value: state.uid).then((value) {
+              print(value.toString());
+              UID = CachHelper.getData(key: 'uid');
+
               navigatAndFinish(context: context, page: const Home());
             });
           } else if (state is SignInWithEmailAndPasswordBad) {

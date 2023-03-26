@@ -1,9 +1,13 @@
 import 'package:bloc/bloc.dart';
 import 'package:firbase/layout/home/Home.dart';
+import 'package:firbase/layout/home/cubit/home_cubit.dart';
 import 'package:firbase/shared/blocObserver/observer.dart';
+import 'package:firbase/shared/components/constants.dart';
 import 'package:firbase/shared/helper/cashHelper.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'Page/Login/Login.dart';
 
 Future<void> main() async {
@@ -12,8 +16,8 @@ Future<void> main() async {
   await CachHelper.init();
   await Firebase.initializeApp();
   Widget startWidget;
-  var uid = CachHelper.getData(key: 'uid');
-  if (uid != null) {
+  UID = CachHelper.getData(key: 'uid') ?? '';
+  if (UID != '') {
     startWidget = const Home();
   } else {
     startWidget = Login();
@@ -32,9 +36,29 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: startwidget,
-      debugShowCheckedModeBanner: false,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => HomeCubit()..getUserData())
+      ],
+      child: MaterialApp(
+        theme: ThemeData(
+          // visualDensity: VisualDensity.adaptivePlatformDensity,
+          appBarTheme: const AppBarTheme(
+              titleTextStyle: TextStyle(
+                  color: Colors.black,
+                  fontSize: 30,
+                  fontWeight: FontWeight.w600),
+              systemOverlayStyle: SystemUiOverlayStyle(
+                  statusBarColor: Colors.white,
+                  statusBarIconBrightness: Brightness.dark),
+              backgroundColor: Colors.white,
+              // shadowColor: Colors.white,
+              elevation: 0),
+          scaffoldBackgroundColor: Colors.white,
+        ),
+        home: startwidget,
+        debugShowCheckedModeBanner: false,
+      ),
     );
   }
 }

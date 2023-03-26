@@ -29,7 +29,7 @@ class RegisterCubit extends Cubit<RegisterState> {
         .then((value) {
       // emit(CreateUserWithEmailAndPasswordGood());
       registerFirestore(
-        uid: FirebaseAuth.instance.currentUser!.uid,
+        uid: value.user!.uid,
         name: name,
         address: address,
         email: email,
@@ -48,17 +48,19 @@ class RegisterCubit extends Cubit<RegisterState> {
       required String phone,
       isEmailVerified = false}) {
     UserModel model = UserModel(
-        name: name,
-        address: address,
-        email: email,
-        phone: phone,
-        isEmailVerified: false);
+      uid: uid,
+      name: name,
+      address: address,
+      email: email,
+      phone: phone,
+      // isEmailVerified: false
+    );
     FirebaseFirestore.instance
         .collection('users')
         .doc(uid)
         .set(model.toMap())
         .then((value) {
-      emit(CreateUserGood());
+      emit(CreateUserGood(uid));
     }).catchError((e) {
       emit(CreateUserBad(e.toString()));
     });
