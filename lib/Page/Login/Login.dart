@@ -5,6 +5,7 @@ import 'package:firbase/Page/Login/cubit/login_cubit.dart';
 import 'package:firbase/Page/Login/cubit/login_state.dart';
 import 'package:firbase/layout/home/Home.dart';
 import 'package:firbase/shared/components/components.dart';
+import 'package:firbase/shared/helper/cashHelper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -132,10 +133,9 @@ class Login extends StatelessWidget {
             //     fontSize: 16.0);
             showToast(msg: "Login Successful", state: ToastStates.success);
             sleep(const Duration(seconds: 1));
-            Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => const Home()),
-                (route) => false);
+            CachHelper.putcache(key: "uid", value: state.uid).then((value) {
+              navigatAndFinish(context: context, page: const Home());
+            });
           } else if (state is SignInWithEmailAndPasswordBad) {
             showToast(msg: state.err, state: ToastStates.error);
           }

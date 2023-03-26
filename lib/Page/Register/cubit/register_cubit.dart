@@ -9,45 +9,53 @@ class RegisterCubit extends Cubit<RegisterState> {
   static RegisterCubit get(context) => BlocProvider.of(context);
 
   bool isvisibility = false;
+  bool isEmailVerified = false;
 
   void showPassword() {
     isvisibility = !isvisibility;
     emit(ShowPasswordState());
   }
 
-  void register(
-      {required String email,
-      required String password,
-      required String address,
-      required String name,
-      required String phone}) {
+  void register({
+    required String email,
+    required String password,
+    required String address,
+    required String name,
+    required String phone,
+  }) {
     emit(LodinRegisterState());
     FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: email, password: password)
         .then((value) {
-      emit(CreateUserWithEmailAndPasswordGood());
-      RegisterFirestore(
-          Uid: FirebaseAuth.instance.currentUser!.uid,
-          name: name,
-          address: address,
-          email: email,
-          phone: phone);
+      // emit(CreateUserWithEmailAndPasswordGood());
+      registerFirestore(
+        uid: FirebaseAuth.instance.currentUser!.uid,
+        name: name,
+        address: address,
+        email: email,
+        phone: phone,
+      );
     }).catchError((e) {
       emit(CreateUserWithEmailAndPasswordBad(e.toString()));
     });
   }
 
-  void RegisterFirestore(
-      {required String Uid,
+  void registerFirestore(
+      {required String uid,
       required String name,
       required String address,
       required String email,
-      required String phone}) {
-    UserModel model =
-        UserModel(name: name, address: address, email: email, phone: phone);
+      required String phone,
+      isEmailVerified = false}) {
+    UserModel model = UserModel(
+        name: name,
+        address: address,
+        email: email,
+        phone: phone,
+        isEmailVerified: false);
     FirebaseFirestore.instance
         .collection('users')
-        .doc(Uid)
+        .doc(uid)
         .set(model.toMap())
         .then((value) {
       emit(CreateUserGood());

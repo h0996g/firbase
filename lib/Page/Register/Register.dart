@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:firbase/Page/Login/Login.dart';
 import 'package:firbase/Page/Register/cubit/register_cubit.dart';
 import 'package:firbase/Page/Register/cubit/register_state.dart';
+import 'package:firbase/layout/home/Home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -139,11 +142,12 @@ class Register extends StatelessWidget {
                                   onPressed: () {
                                     if (formkey.currentState!.validate()) {
                                       _registerCubit.register(
-                                          email: emailController.text,
-                                          password: passwordController.text,
-                                          address: addressController.text,
-                                          name: nameController.text,
-                                          phone: phoneController.text);
+                                        email: emailController.text,
+                                        password: passwordController.text,
+                                        address: addressController.text,
+                                        name: nameController.text,
+                                        phone: phoneController.text,
+                                      );
                                     }
                                   });
                             },
@@ -176,6 +180,8 @@ class Register extends StatelessWidget {
         listener: (BuildContext context, Object? state) {
           if (state is CreateUserGood) {
             showToast(msg: "Succesffuly", state: ToastStates.success);
+            // sleep(const Duration(seconds: 1));
+            navigatAndFinish(context: context, page: const Home());
           } else if (state is CreateUserBad) {
             showToast(msg: "Faild", state: ToastStates.error);
           }
