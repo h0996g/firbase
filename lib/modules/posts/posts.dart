@@ -13,7 +13,7 @@ class AddPost extends StatelessWidget {
       appBar: AppBar(
           leading: IconButton(
               onPressed: () {
-                navigatAndFinish(context: context, page: Home());
+                navigatAndFinish(context: context, page: const Home());
               },
               icon: const Icon(
                 IconBroken.Arrow___Left_2,

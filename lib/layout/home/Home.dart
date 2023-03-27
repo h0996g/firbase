@@ -37,7 +37,7 @@ class Home extends StatelessWidget {
                 icon: Icon(IconBroken.Paper_Upload),
               ),
               BottomNavigationBarItem(
-                label: 'Setting',
+                label: 'Users',
                 icon: Icon(IconBroken.Location),
               ),
               BottomNavigationBarItem(

@@ -1,3 +1,4 @@
+import 'package:firbase/shared/styles/icon/iconBroken.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -21,7 +22,7 @@ Widget defaultForm(
           suffixIcon: suffixIcon,
           suffix: suffix,
           prefixIcon: prefixIcon,
-          border: OutlineInputBorder(),
+          border: const OutlineInputBorder(),
           labelText: labels),
       controller: controler,
       validator: (String? value) {
@@ -102,3 +103,17 @@ void navigatAndReturn({required context, required page}) =>
 void navigatAndFinish({required context, required page}) =>
     Navigator.pushAndRemoveUntil(context,
         MaterialPageRoute(builder: (context) => page), (route) => false);
+
+PreferredSizeWidget defaultAppBar(
+        {String? title, List<Widget>? actions, context}) =>
+    AppBar(
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(
+              IconBroken.Arrow___Left_2,
+              color: Colors.black,
+            )),
+        title: Text(title!),
+        actions: actions);

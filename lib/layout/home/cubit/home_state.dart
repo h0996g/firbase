@@ -18,3 +18,11 @@ class GetUserDataStateBad extends HomeState {
 class ChangeButtonNavStateGood extends HomeState {}
 
 class ChangeButtonNavStateToAddPostsGood extends HomeState {}
+
+class ImagePickerCoverStateGood extends HomeState {}
+
+class ImagePickerCoverStateBad extends HomeState {}
+
+class ImagePickerProfileStateGood extends HomeState {}
+
+class ImagePickerProfileStateBad extends HomeState {}

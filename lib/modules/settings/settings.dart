@@ -1,3 +1,5 @@
+import 'package:firbase/modules/editeProfile/editeProfile.dart';
+import 'package:firbase/shared/components/components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../layout/home/cubit/home_cubit.dart';
@@ -44,14 +46,14 @@ class Setting extends StatelessWidget {
                       )
                     ]),
               ),
-              const Text(
-                'houssem eddine',
-                style: TextStyle(fontWeight: FontWeight.w500),
+              Text(
+                _homeCubit.model!.name!,
+                style: const TextStyle(fontWeight: FontWeight.w500),
               ),
               const SizedBox(
                 height: 10,
               ),
-              const Text('M1 Stic'),
+              Text(_homeCubit.model!.bio!),
               const SizedBox(
                 height: 15,
               ),
@@ -144,6 +146,8 @@ class Setting extends StatelessWidget {
                     height: 45,
                     child: OutlinedButton(
                         onPressed: () {
+                          navigatAndReturn(
+                              context: context, page: EditeProfile());
                           // Navigator.push(
                           //     context,
                           //     MaterialPageRoute(

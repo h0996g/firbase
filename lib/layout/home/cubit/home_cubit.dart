@@ -6,6 +6,7 @@ import 'package:firbase/modules/posts/posts.dart';
 import 'package:firbase/modules/users/users.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../modules/settings/settings.dart';
 import '../../../shared/components/constants.dart';
@@ -52,4 +53,32 @@ class HomeCubit extends Cubit<HomeState> {
     'Users',
     'Settings'
   ];
+
+  // ! imagePicker
+
+  XFile? imageCover;
+  XFile? imageProfile;
+  Future<void> imagePickerCover(ImageSource source) async {
+    final ImagePicker _pickerCover = ImagePicker();
+
+    await _pickerCover.pickImage(source: source).then((value) {
+      imageCover = value;
+      emit(ImagePickerCoverStateGood());
+    }).catchError((e) {
+      emit(ImagePickerCoverStateBad());
+    });
+  }
+
+  Future<void> imagePickerProfile(ImageSource source) async {
+    final ImagePicker _pickerProfile = ImagePicker();
+
+    _pickerProfile.pickImage(source: source).then((value) {
+      imageProfile = value;
+      emit(ImagePickerProfileStateGood());
+    }).catchError((e) {
+      emit(ImagePickerProfileStateBad());
+    });
+  }
+
+  // !
 }
