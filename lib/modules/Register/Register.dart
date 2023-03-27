@@ -1,9 +1,5 @@
-import 'dart:io';
-
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
-import 'package:firbase/Page/Login/Login.dart';
-import 'package:firbase/Page/Register/cubit/register_cubit.dart';
-import 'package:firbase/Page/Register/cubit/register_state.dart';
+
 import 'package:firbase/layout/home/Home.dart';
 import 'package:firbase/shared/helper/cashHelper.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +7,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../shared/components/components.dart';
 import '../../shared/components/constants.dart';
+import '../Login/Login.dart';
+import 'cubit/register_cubit.dart';
+import 'cubit/register_state.dart';
 
 class Register extends StatelessWidget {
   Register({Key? key}) : super(key: key);

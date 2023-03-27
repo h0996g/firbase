@@ -14,3 +14,7 @@ class GetUserDataStateBad extends HomeState {
 
   GetUserDataStateBad(this.error);
 }
+
+class ChangeButtonNavStateGood extends HomeState {}
+
+class ChangeButtonNavStateToAddPostsGood extends HomeState {}

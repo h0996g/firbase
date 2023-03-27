@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firbase/Page/Register/cubit/register_state.dart';
 import 'package:firbase/models/UserModel.dart';
+import 'package:firbase/modules/Register/cubit/register_state.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

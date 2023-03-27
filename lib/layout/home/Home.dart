@@ -1,11 +1,13 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
-import 'package:firbase/Page/Login/Login.dart';
 import 'package:firbase/layout/home/cubit/home_cubit.dart';
+import 'package:firbase/modules/posts/posts.dart';
 import 'package:firbase/shared/components/components.dart';
 import 'package:firbase/shared/helper/cashHelper.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firbase/shared/styles/icon/iconBroken.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../modules/Login/Login.dart';
 
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
@@ -16,44 +18,59 @@ class Home extends StatelessWidget {
     return BlocConsumer<HomeCubit, HomeState>(
       builder: (BuildContext context, state) {
         return Scaffold(
+          bottomNavigationBar: BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
+            onTap: (index) {
+              _homeCubit.changeButtonNav(index);
+            },
+            items: const [
+              BottomNavigationBarItem(
+                label: 'Home',
+                icon: Icon(IconBroken.Home),
+              ),
+              BottomNavigationBarItem(
+                label: 'Chats',
+                icon: Icon(IconBroken.Chat),
+              ),
+              BottomNavigationBarItem(
+                label: 'Posts',
+                icon: Icon(IconBroken.Paper_Upload),
+              ),
+              BottomNavigationBarItem(
+                label: 'Setting',
+                icon: Icon(IconBroken.Location),
+              ),
+              BottomNavigationBarItem(
+                label: 'Setting',
+                icon: Icon(IconBroken.Setting),
+              ),
+            ],
+            currentIndex: _homeCubit.currentIndex,
+          ),
           floatingActionButton: FloatingActionButton(onPressed: () {
             CachHelper.removdata(key: "uid").then((value) {
               navigatAndFinish(context: context, page: Login());
             });
           }),
-          appBar: AppBar(title: const Text("Home")),
+          appBar: AppBar(actions: [
+            IconButton(
+              icon: const Icon(
+                IconBroken.Notification,
+                color: Colors.black,
+              ),
+              onPressed: () {},
+            ),
+            IconButton(
+              icon: const Icon(
+                IconBroken.Search,
+                color: Colors.black,
+              ),
+              onPressed: () {},
+            ),
+          ], title: Text(_homeCubit.AppbarScreen[_homeCubit.currentIndex])),
           body: ConditionalBuilder(
             builder: (BuildContext context) {
-              return Column(
-                children: [
-                  if (FirebaseAuth.instance.currentUser!.emailVerified != true)
-                    Container(
-                      padding: const EdgeInsetsDirectional.symmetric(
-                        horizontal: 20,
-                      ),
-                      color: Colors.amber.withOpacity(.6),
-                      child: Row(
-                        children: [
-                          const Icon(Icons.info_outline),
-                          const Text(
-                            " please verify your email",
-                            style: TextStyle(fontSize: 20),
-                          ),
-                          const Spacer(),
-                          TextButton(
-                              onPressed: () {
-                                FirebaseAuth.instance.currentUser!
-                                    .sendEmailVerification();
-                              },
-                              child: const Text(
-                                "Send",
-                                style: TextStyle(fontSize: 20),
-                              ))
-                        ],
-                      ),
-                    )
-                ],
-              );
+              return _homeCubit.userScreen[_homeCubit.currentIndex];
             },
             condition: _homeCubit.model != null,
             fallback: (BuildContext context) {
@@ -64,7 +81,11 @@ class Home extends StatelessWidget {
           ),
         );
       },
-      listener: (BuildContext context, Object? state) {},
+      listener: (BuildContext context, Object? state) {
+        if (state is ChangeButtonNavStateToAddPostsGood) {
+          navigatAndReturn(context: context, page: const AddPost());
+        }
+      },
     );
   }
 }
