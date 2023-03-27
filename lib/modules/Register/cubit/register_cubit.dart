@@ -53,6 +53,13 @@ class RegisterCubit extends Cubit<RegisterState> {
       address: address,
       email: email,
       phone: phone,
+      bio: 'Write your bio ...',
+      cover:
+          'https://img.freepik.com/free-photo/flat-lay-lunch-boxes-assortment_23-2149060450.jpg?w=996&t=st=1663211256~exp=1663211856~hmac=68aab193571ed413133e91c589a9f4ce5422774225c1425c8fe25c95caed6eda',
+
+      img:
+          'https://img.freepik.com/free-vector/mafia-tiger-character-with-hat_23-2148473394.jpg?w=740&t=st=1663209025~exp=1663209625~hmac=38c128ec6235347df128b2ab45aa4fd38369ac5c386281126ba96410bc67d27e',
+
       // isEmailVerified: false
     );
     FirebaseFirestore.instance

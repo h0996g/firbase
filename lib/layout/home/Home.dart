@@ -67,7 +67,7 @@ class Home extends StatelessWidget {
               ),
               onPressed: () {},
             ),
-          ], title: Text(_homeCubit.AppbarScreen[_homeCubit.currentIndex])),
+          ], title: Text(_homeCubit.appbarScreen[_homeCubit.currentIndex])),
           body: ConditionalBuilder(
             builder: (BuildContext context) {
               return _homeCubit.userScreen[_homeCubit.currentIndex];

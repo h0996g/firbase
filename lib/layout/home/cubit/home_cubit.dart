@@ -38,6 +38,18 @@ class HomeCubit extends Cubit<HomeState> {
     }
   }
 
-  List<Widget> userScreen = const [Feeds(), Chats(), Users(), Setting()];
-  List<String> AppbarScreen = const ['Feeds', 'Chats', 'Users', 'Settings'];
+  List<Widget> userScreen = const [
+    Feeds(),
+    Chats(),
+    AddPost(),
+    Users(),
+    Setting()
+  ];
+  List<String> appbarScreen = const [
+    'Feeds',
+    'Chats',
+    'AddPost',
+    'Users',
+    'Settings'
+  ];
 }
