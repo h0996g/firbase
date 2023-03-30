@@ -30,7 +30,8 @@ class Setting extends StatelessWidget {
                                   topLeft: Radius.circular(10),
                                   topRight: Radius.circular(10)),
                               image: DecorationImage(
-                                  image: NetworkImage(_homeCubit.model!.cover!),
+                                  image: NetworkImage(
+                                      _homeCubit.userModel!.cover!),
                                   fit: BoxFit.cover)),
                           height: 170,
                         ),
@@ -40,20 +41,21 @@ class Setting extends StatelessWidget {
                             Theme.of(context).scaffoldBackgroundColor,
                         radius: 63,
                         child: CircleAvatar(
-                          backgroundImage: NetworkImage(_homeCubit.model!.img!),
+                          backgroundImage:
+                              NetworkImage(_homeCubit.userModel!.img!),
                           radius: 60,
                         ),
                       )
                     ]),
               ),
               Text(
-                _homeCubit.model!.name!,
+                _homeCubit.userModel!.name!,
                 style: const TextStyle(fontWeight: FontWeight.w500),
               ),
               const SizedBox(
                 height: 10,
               ),
-              Text(_homeCubit.model!.bio!),
+              Text(_homeCubit.userModel!.bio!),
               const SizedBox(
                 height: 15,
               ),

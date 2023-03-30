@@ -72,7 +72,7 @@ class Home extends StatelessWidget {
             builder: (BuildContext context) {
               return _homeCubit.userScreen[_homeCubit.currentIndex];
             },
-            condition: _homeCubit.model != null,
+            condition: _homeCubit.userModel != null,
             fallback: (BuildContext context) {
               return const Center(
                 child: CircularProgressIndicator(),

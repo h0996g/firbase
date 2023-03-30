@@ -42,7 +42,6 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         theme: ThemeData(
-          // visualDensity: VisualDensity.adaptivePlatformDensity,
           appBarTheme: const AppBarTheme(
               titleTextStyle: TextStyle(
                   color: Colors.black,

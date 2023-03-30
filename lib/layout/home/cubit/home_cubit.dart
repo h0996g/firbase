@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firbase/models/UserModel.dart';
 import 'package:firbase/modules/chats/chats.dart';
 import 'package:firbase/modules/feeds/feeds.dart';
@@ -16,13 +19,13 @@ part 'home_state.dart';
 class HomeCubit extends Cubit<HomeState> {
   HomeCubit() : super(HomeInitial());
   static HomeCubit get(context) => BlocProvider.of(context);
-  UserModel? model;
+  UserModel? userModel;
   int currentIndex = 0;
   void getUserData() {
     emit(LodinGetUserDataState());
     FirebaseFirestore.instance.collection('users').doc(UID).get().then((value) {
       print(value.data());
-      model = UserModel.fromJson(value.data()!);
+      userModel = UserModel.fromJson(value.data()!);
       // print(_userModel);
       emit(GetUserDataStateGood());
     }).catchError((e) {
@@ -63,6 +66,8 @@ class HomeCubit extends Cubit<HomeState> {
 
     await _pickerCover.pickImage(source: source).then((value) {
       imageCover = value;
+      print(imageCover!.path);
+      // print(Uri.file(imageCover!.path).pathSegments.last);
       emit(ImagePickerCoverStateGood());
     }).catchError((e) {
       emit(ImagePickerCoverStateBad());
@@ -81,4 +86,92 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   // !
+
+// ! update info img profile and cover and value
+
+  String? linkProfileImg;
+  String? linkCoverImg;
+  Future<void> updateProfileImg() async {
+    await firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child('users/' + Uri.file(imageProfile!.path).pathSegments.last)
+        .putFile(File(imageProfile!.path))
+        .then((p0) async {
+      await p0.ref.getDownloadURL().then((value) {
+        linkProfileImg = value;
+        print(linkProfileImg);
+        // emit(UploadProfileImgAndGetUrlStateGood());  //! bah matro7ch  LodingUpdateUserStateGood() t3 Widget LinearProgressIndicator
+      }).catchError((e) {
+        emit(UploadProfileImgAndGetUrlStateBad());
+      });
+    });
+  }
+
+  Future<void> updateCoverImg() async {
+    await firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child('users/' + Uri.file(imageCover!.path).pathSegments.last)
+        .putFile(File(imageCover!.path))
+        .then((p0) async {
+      await p0.ref.getDownloadURL().then((value) {
+        linkCoverImg = value;
+        print(linkCoverImg);
+        // emit(UploadCoverImgAndGetUrlStateGood());  //! bah matro7ch  LodingUpdateUserStateGood() t3 Widget LinearProgressIndicator
+      }).catchError((e) {
+        emit(UploadCoverImgAndGetUrlStateBad());
+      });
+    });
+  }
+
+  Future<void> updateUser({
+    required String name,
+    required String phone,
+    required String address,
+    required String bio,
+  }) async {
+    emit(LodingUpdateUserState());
+    if (imageProfile != null) {
+      await updateProfileImg();
+    }
+    if (imageCover != null) {
+      await updateCoverImg();
+    }
+    print({"Profile img : $linkProfileImg"});
+    print("Cover img : $linkCoverImg");
+
+    UserModel model = UserModel(
+      uid: userModel!.uid,
+      name: name,
+      address: address,
+      email: userModel!.email,
+      phone: phone,
+      bio: bio,
+      cover: linkCoverImg ?? userModel!.cover,
+      img: linkProfileImg ?? userModel!.img,
+    );
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userModel!.uid)
+        .update(model.toMap())
+        .then((value) {
+      getUserData();
+      resetWhenUpdateUser(); //update jaya ykono null my3awedtch yb3ethom kon my3amarhomch
+      emit(UpdateUserStateGood());
+    }).catchError((e) {
+      emit(UpdateUserStateBad());
+    });
+  }
+
+  void resetWhenUpdateUser() {
+    linkProfileImg = null;
+    linkCoverImg = null;
+  }
+
+  void resetWhenReturnFromUpdate() {
+    imageCover = null;
+    imageProfile = null;
+  }
+// !
 }
+
+// ! mzllt mdrtch Fonction get defaultValue (NULL);
