@@ -32,11 +32,12 @@ class EditeProfile extends StatelessWidget {
           child: Scaffold(
             appBar: defaultAppBar(
                 canreturn: canreturn,
-                whenBack: () {
-                  // trad photo li var imagepicker null bh kon mydirch update wydir back wyrje3 mylgahach yl9a lgdima li jabnaha bl model
-                  _homeCubit.resetWhenReturnFromUpdate();
+                onPressed: () {
+                  if (canreturn) {
+                    // trad photo li var imagepicker null bh kon mydirch update wydir back wyrje3 mylgahach yl9a lgdima li jabnaha bl model
+                    _homeCubit.resetWhenReturnFromUpdate();
+                  }
                 },
-                context: context,
                 title: 'Edit Profile',
                 actions: [
                   TextButton(
@@ -58,7 +59,7 @@ class EditeProfile extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    if (state is LodingUpdateUserState)
+                    if (state is LodingAddPostState)
                       const Column(
                         children: [
                           LinearProgressIndicator(),

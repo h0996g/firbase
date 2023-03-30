@@ -107,17 +107,12 @@ void navigatAndFinish({required context, required page}) =>
 PreferredSizeWidget defaultAppBar(
         {String? title,
         List<Widget>? actions,
-        context,
         bool canreturn = true,
-        Function()? whenBack}) =>
+        // Function()? whenBack,
+        Function()? onPressed}) =>
     AppBar(
         leading: IconButton(
-            onPressed: () {
-              if (canreturn) {
-                whenBack!();
-                Navigator.pop(context);
-              }
-            },
+            onPressed: onPressed,
             icon: const Icon(
               IconBroken.Arrow___Left_2,
               color: Colors.black,

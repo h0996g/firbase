@@ -27,6 +27,10 @@ class ImagePickerProfileStateGood extends HomeState {}
 
 class ImagePickerProfileStateBad extends HomeState {}
 
+class ImagePickerPostStateGood extends HomeState {}
+
+class ImagePickerPostStateBad extends HomeState {}
+
 class UploadProfileImgAndGetUrlStateGood extends HomeState {}
 
 class UploadProfileImgAndGetUrlStateBad extends HomeState {}
@@ -41,4 +45,12 @@ class UpdateUserStateGood extends HomeState {}
 
 class UpdateUserStateBad extends HomeState {}
 
-class GGG extends HomeState {}
+class UploadPostAndGetUrlStateGood extends HomeState {}
+
+class UploadPostAndGetUrlStateBad extends HomeState {}
+
+class LodingAddPostState extends HomeState {}
+
+class AddPostStateGood extends HomeState {}
+
+class AddPostStateBad extends HomeState {}

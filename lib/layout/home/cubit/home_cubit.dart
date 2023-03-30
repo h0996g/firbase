@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firbase/models/PostModel.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firbase/models/UserModel.dart';
 import 'package:firbase/modules/chats/chats.dart';
@@ -21,6 +22,21 @@ class HomeCubit extends Cubit<HomeState> {
   static HomeCubit get(context) => BlocProvider.of(context);
   UserModel? userModel;
   int currentIndex = 0;
+  List<Widget> userScreen = const [
+    Feeds(),
+    Chats(),
+    AddPost(),
+    Users(),
+    Setting()
+  ];
+  List<String> appbarScreen = const [
+    'Feeds',
+    'Chats',
+    'AddPost',
+    'Users',
+    'Settings'
+  ];
+
   void getUserData() {
     emit(LodinGetUserDataState());
     FirebaseFirestore.instance.collection('users').doc(UID).get().then((value) {
@@ -42,22 +58,9 @@ class HomeCubit extends Cubit<HomeState> {
     }
   }
 
-  List<Widget> userScreen = const [
-    Feeds(),
-    Chats(),
-    AddPost(),
-    Users(),
-    Setting()
-  ];
-  List<String> appbarScreen = const [
-    'Feeds',
-    'Chats',
-    'AddPost',
-    'Users',
-    'Settings'
-  ];
+  // ------------------------- //? EditeProfile ------------------------------------------------
 
-  // ! imagePicker
+  // ! imagePicker lel Edite Profile
 
   XFile? imageCover;
   XFile? imageProfile;
@@ -76,7 +79,6 @@ class HomeCubit extends Cubit<HomeState> {
 
   Future<void> imagePickerProfile(ImageSource source) async {
     final ImagePicker _pickerProfile = ImagePicker();
-
     _pickerProfile.pickImage(source: source).then((value) {
       imageProfile = value;
       emit(ImagePickerProfileStateGood());
@@ -84,6 +86,17 @@ class HomeCubit extends Cubit<HomeState> {
       emit(ImagePickerProfileStateBad());
     });
   }
+
+  // Future<void> imagePickerPost(ImageSource source) async {
+  //   final ImagePicker _pickerProfile = ImagePicker();
+
+  //   _pickerProfile.pickImage(source: source).then((value) {
+  //     imagePost = value;
+  //     emit(ImagePickerPostStateGood());
+  //   }).catchError((e) {
+  //     emit(ImagePickerPostStateBad());
+  //   });
+  // }
 
   // !
 
@@ -172,6 +185,85 @@ class HomeCubit extends Cubit<HomeState> {
     imageProfile = null;
   }
 // !
+
+  // ------------------------- //? End EditeProfile ------------------------------------------------
+
+  // ------------------------- //? Add Post ------------------------------------------------
+  XFile? imagePost;
+
+  List<XFile> multipickerPost = [];
+  // ! to add Multi images AddPost (imagePicker)
+  Future<void> multuPickerPost({ImageSource? source}) async {
+    final ImagePicker _pickerPost = ImagePicker();
+    if (source == ImageSource.camera) {
+      // kon tkon mn camera tetzad lel multipickerPost
+      await _pickerPost.pickImage(source: ImageSource.camera).then((value) {
+        multipickerPost.add(value!);
+        emit(ImagePickerPostStateGood());
+      });
+    } else {
+      _pickerPost.pickMultiImage().then((value) {
+        multipickerPost.addAll(value);
+        emit(ImagePickerPostStateGood());
+      }).catchError((e) {
+        emit(ImagePickerPostStateBad());
+      });
+    }
+  }
+
+  List<String> linkMultiPostImg = [];
+  Future<void> uploadMuliImagePost() async {
+    for (var element in multipickerPost) {
+      await firebase_storage.FirebaseStorage.instance
+          .ref()
+          .child('posts/' + Uri.file(element.path).pathSegments.last)
+          .putFile(File(element.path))
+          .then((p0) async {
+        await p0.ref.getDownloadURL().then((value) {
+          linkMultiPostImg.add(value);
+
+          // emit(UploadPostAndGetUrlStateGood());  //! bah matro7ch  LodingAddPostState() t3 Widget LinearProgressIndicator
+        }).catchError((e) {
+          emit(UploadPostAndGetUrlStateBad());
+        });
+      });
+    }
+  }
+
+  Future<void> addPost({
+    required String text,
+  }) async {
+    emit(LodingAddPostState());
+    if (multipickerPost != []) {
+      await uploadMuliImagePost();
+    }
+    PostModel model = PostModel(
+        uid: userModel!.uid,
+        name: userModel!.name,
+        dateTime: DateTime.now().toString(),
+        postImg: linkMultiPostImg.toList(),
+        profileimg: userModel!.img,
+        text: text);
+    await FirebaseFirestore.instance
+        .collection('posts')
+        .add(model.toMap())
+        .then((value) {
+      emit(AddPostStateGood());
+    }).catchError((e) {
+      emit(AddPostStateBad());
+    });
+  }
+
+  resetWhenAddPost() {
+    multipickerPost = [];
+    linkMultiPostImg = [];
+  }
 }
 
+
+// ------------------------- //? End Add Post ------------------------------------------------
+
 // ! mzllt mdrtch Fonction get defaultValue (NULL);
+
+// ? bh njib user info f login wla register getUserData()
+// ?
