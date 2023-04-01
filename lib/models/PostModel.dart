@@ -1,25 +1,20 @@
 class PostModel {
   String? name;
   String? uid;
-  String? profileimg;
-  List<String?>? postImg;
+  String? img;
+  List<dynamic>? postImg;
   String? text;
   String? dateTime;
 
   // bool? isEmailVerified;
   PostModel(
-      {this.uid,
-      this.name,
-      this.profileimg,
-      this.dateTime,
-      this.postImg,
-      this.text
+      {this.uid, this.name, this.img, this.dateTime, this.postImg, this.text
       // this.isEmailVerified
       });
   PostModel.fromJson(Map<String, dynamic> json) {
     uid = json['uid'];
     name = json['name'];
-    profileimg = json['profileimg'];
+    img = json['img'];
     dateTime = json['dateTime'];
     text = json['text'];
     postImg = json['postImg'];
@@ -29,7 +24,7 @@ class PostModel {
     return {
       'uid': uid,
       'name': name,
-      'img': profileimg,
+      'img': img,
       'dateTime': dateTime,
       'text': text,
       'postImg': postImg,

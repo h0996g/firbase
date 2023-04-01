@@ -242,12 +242,13 @@ class HomeCubit extends Cubit<HomeState> {
         name: userModel!.name,
         dateTime: DateTime.now().toString(),
         postImg: linkMultiPostImg.toList(),
-        profileimg: userModel!.img,
+        img: userModel!.img,
         text: text);
     await FirebaseFirestore.instance
         .collection('posts')
         .add(model.toMap())
         .then((value) {
+      getPosts();
       emit(AddPostStateGood());
     }).catchError((e) {
       emit(AddPostStateBad());
@@ -258,7 +259,23 @@ class HomeCubit extends Cubit<HomeState> {
     multipickerPost = [];
     linkMultiPostImg = [];
   }
+
+  List<PostModel?> posts = [];
+  void getPosts() {
+    emit(LodinGetPostsState());
+    FirebaseFirestore.instance.collection("posts").get().then((value) {
+      for (var element in value.docs) {
+        print(element.data());
+        posts.add(PostModel.fromJson(element.data()));
+      }
+      emit(GetPostsStateGood());
+    }).catchError((e) {
+      print(e.toString());
+      emit(GetPostsStateBad(e.toString()));
+    });
+  }
 }
+
 
 
 // ------------------------- //? End Add Post ------------------------------------------------

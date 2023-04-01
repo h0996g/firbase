@@ -54,3 +54,13 @@ class LodingAddPostState extends HomeState {}
 class AddPostStateGood extends HomeState {}
 
 class AddPostStateBad extends HomeState {}
+
+class LodinGetPostsState extends HomeState {}
+
+class GetPostsStateGood extends HomeState {}
+
+class GetPostsStateBad extends HomeState {
+  final error;
+
+  GetPostsStateBad(this.error);
+}

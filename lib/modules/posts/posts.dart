@@ -197,6 +197,8 @@ class AddPost extends StatelessWidget {
       listener: (BuildContext context, Object? state) {
         if (state is AddPostStateGood) {
           showToast(msg: 'Update Successfully', state: ToastStates.success);
+          navigatAndFinish(context: context, page: const Home());
+          _homeCubit.resetWhenAddPost();
         } else if (state is AddPostStateBad) {
           showToast(msg: 'Update Failed', state: ToastStates.error);
         }
