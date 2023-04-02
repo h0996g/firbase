@@ -82,7 +82,7 @@ class Feeds extends StatelessWidget {
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemBuilder: (context, index) =>
-                          itemBuilder(_homeCubit.posts[index]!, context),
+                          itemBuilder(_homeCubit.posts[index]!, context, index),
                       separatorBuilder: (context, index) => const SizedBox(
                             height: 10,
                           ),
@@ -107,7 +107,7 @@ class Feeds extends StatelessWidget {
   }
 }
 
-Widget itemBuilder(PostModel model, context) => Card(
+Widget itemBuilder(PostModel model, context, index) => Card(
       clipBehavior: Clip.antiAliasWithSaveLayer,
       elevation: 10,
       margin: const EdgeInsets.symmetric(horizontal: 10),
@@ -128,6 +128,7 @@ Widget itemBuilder(PostModel model, context) => Card(
                 ),
                 Expanded(
                   child: Column(
+                    // crossAxisAlignment
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
@@ -153,9 +154,16 @@ Widget itemBuilder(PostModel model, context) => Card(
             const SizedBox(
               height: 10,
             ),
-            Text(
-              model.text!,
-              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+            Align(
+              alignment: Alignment.topLeft,
+              child: Text(
+                '    ${model.text!}',
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w500,
+                ),
+                textAlign: TextAlign.start,
+              ),
             ),
             if (model.postImg!.isNotEmpty)
               SizedBox(
@@ -163,12 +171,15 @@ Widget itemBuilder(PostModel model, context) => Card(
             Row(
               children: [
                 IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      HomeCubit.get(context).addLike(
+                          postid: HomeCubit.get(context).postIdList[index]);
+                    },
                     icon: const Icon(
                       IconBroken.Heart,
                       color: Colors.amber,
                     )),
-                const Text('0'),
+                Text('${HomeCubit.get(context).countLikeList[index]}'),
                 const Spacer(),
                 IconButton(
                     onPressed: () {},
@@ -193,15 +204,11 @@ Widget itemBuilder(PostModel model, context) => Card(
                 const SizedBox(
                   width: 15,
                 ),
-                const Text('Write a comment ...'),
+                const Text(
+                  'Write a comment ...',
+                  style: TextStyle(height: 1),
+                ),
                 const Spacer(),
-                IconButton(
-                    icon: const Icon(
-                      IconBroken.Heart,
-                      color: Colors.red,
-                    ),
-                    onPressed: () {}),
-                const Text('Like')
               ],
             )
           ],
@@ -217,7 +224,7 @@ itemBuilderPostsImage(List<dynamic> postImg) => ListView.builder(
       index,
     ) =>
         Container(
-          padding: const EdgeInsetsDirectional.only(top: 5),
+          padding: const EdgeInsetsDirectional.only(top: 8),
           decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
           child: Card(
             clipBehavior: Clip.antiAliasWithSaveLayer,

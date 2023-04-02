@@ -64,3 +64,15 @@ class GetPostsStateBad extends HomeState {
 
   GetPostsStateBad(this.error);
 }
+
+class LodinLikePostsState extends HomeState {}
+
+class LikePostsStateGood extends HomeState {}
+
+class LikePostsStateBad extends HomeState {
+  final error;
+
+  LikePostsStateBad(this.error);
+}
+
+class FF extends HomeState {}

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firbase/models/PostModel.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firbase/models/UserModel.dart';
 import 'package:firbase/modules/chats/chats.dart';
@@ -261,22 +262,44 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   List<PostModel?> posts = [];
+  List<String> postIdList = [];
+  List<int> countLikeList = [];
+  //tjib post w postId w like ta3hom tani
   void getPosts() {
     emit(LodinGetPostsState());
-    FirebaseFirestore.instance.collection("posts").get().then((value) {
+    FirebaseFirestore.instance.collection("posts").get().then((value) async {
       for (var element in value.docs) {
-        print(element.data());
-        posts.add(PostModel.fromJson(element.data()));
+        await element.reference.collection('likes').get().then((value) {
+          //! await hadi bh y3mr liste li kynin 9bl mydir emit(GetPostsStateGood()) bh tjina f Screen
+          countLikeList.add(value.docs.length);
+          postIdList.add(element.id);
+          posts.add(PostModel.fromJson(element.data()));
+        }).catchError((e) {
+          print(e.toString());
+        });
       }
+
       emit(GetPostsStateGood());
     }).catchError((e) {
       print(e.toString());
       emit(GetPostsStateBad(e.toString()));
     });
   }
+
+  void addLike({required String postid}) {
+    emit(LodinLikePostsState());
+    FirebaseFirestore.instance
+        .collection('posts')
+        .doc(postid)
+        .collection('likes')
+        .doc(userModel!.uid)
+        .set({'like': true}).then((value) {
+      emit(LikePostsStateGood());
+    }).catchError((e) {
+      emit(LikePostsStateBad(e.toString()));
+    });
+  }
 }
-
-
 
 // ------------------------- //? End Add Post ------------------------------------------------
 
