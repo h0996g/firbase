@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:firbase/layout/home/Home.dart';
+import 'package:firbase/layout/home/cubit/home_cubit.dart';
 import 'package:firbase/shared/components/components.dart';
 import 'package:firbase/shared/helper/cashHelper.dart';
 import 'package:flutter/material.dart';
@@ -135,6 +136,9 @@ class Login extends StatelessWidget {
             CachHelper.putcache(key: "uid", value: state.uid).then((value) {
               print(value.toString());
               UID = CachHelper.getData(key: 'uid');
+
+              HomeCubit.get(context).getUserData();
+              HomeCubit.get(context).getPosts();
 
               navigatAndFinish(context: context, page: const Home());
             });

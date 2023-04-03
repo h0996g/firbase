@@ -81,12 +81,12 @@ class Feeds extends StatelessWidget {
                   ListView.separated(
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
-                      itemBuilder: (context, index) =>
-                          itemBuilder(_homeCubit.posts[index]!, context, index),
+                      itemBuilder: (context, index) => itemBuilder(
+                          _homeCubit.postModelList[index]!, context, index),
                       separatorBuilder: (context, index) => const SizedBox(
                             height: 10,
                           ),
-                      itemCount: _homeCubit.posts.length),
+                      itemCount: _homeCubit.postModelList.length),
                   const SizedBox(
                     height: 10,
                   )
@@ -94,7 +94,8 @@ class Feeds extends StatelessWidget {
               ),
             );
           },
-          condition: _homeCubit.userModel != null && _homeCubit.posts != [],
+          condition:
+              _homeCubit.userModel != null && _homeCubit.postModelList != [],
           fallback: (BuildContext context) {
             return const Center(
               child: CircularProgressIndicator(),

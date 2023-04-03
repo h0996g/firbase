@@ -49,6 +49,7 @@ class Home extends StatelessWidget {
           ),
           floatingActionButton: FloatingActionButton(onPressed: () {
             CachHelper.removdata(key: "uid").then((value) {
+              _homeCubit.resetWhenLogout();
               navigatAndFinish(context: context, page: Login());
             });
           }),

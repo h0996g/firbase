@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firbase/models/PostModel.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firbase/models/UserModel.dart';
 import 'package:firbase/modules/chats/chats.dart';
@@ -51,7 +50,13 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   changeButtonNav(int currentIndex) {
-    if (currentIndex == 2) {
+    if (currentIndex == 1) {
+      if (usersModelList.isEmpty) {
+        getAllUsers();
+      }
+      this.currentIndex = currentIndex;
+      emit(ChangeButtonNavStateGood());
+    } else if (currentIndex == 2) {
       emit(ChangeButtonNavStateToAddPostsGood());
     } else {
       this.currentIndex = currentIndex;
@@ -261,7 +266,7 @@ class HomeCubit extends Cubit<HomeState> {
     linkMultiPostImg = [];
   }
 
-  List<PostModel?> posts = [];
+  List<PostModel?> postModelList = [];
   List<String> postIdList = [];
   List<int> countLikeList = [];
   //tjib post w postId w like ta3hom tani
@@ -273,7 +278,7 @@ class HomeCubit extends Cubit<HomeState> {
           //! await hadi bh y3mr liste li kynin 9bl mydir emit(GetPostsStateGood()) bh tjina f Screen
           countLikeList.add(value.docs.length);
           postIdList.add(element.id);
-          posts.add(PostModel.fromJson(element.data()));
+          postModelList.add(PostModel.fromJson(element.data()));
         }).catchError((e) {
           print(e.toString());
         });
@@ -297,6 +302,28 @@ class HomeCubit extends Cubit<HomeState> {
       emit(LikePostsStateGood());
     }).catchError((e) {
       emit(LikePostsStateBad(e.toString()));
+    });
+  }
+
+  resetWhenLogout() {
+    userModel = null;
+    postModelList = [];
+    usersModelList = [];
+  }
+
+  List<UserModel> usersModelList = [];
+  Future<void> getAllUsers() async {
+    emit(LodinGetAllUsersDataState());
+    await FirebaseFirestore.instance.collection('users').get().then((value) {
+      for (var element in value.docs) {
+        if (element.id != userModel!.uid) {
+          // hadi bh myjibch compte ta3i f chat
+          usersModelList.add(UserModel.fromJson(element.data()));
+        }
+      }
+      emit(GetAllUsersDataStateGood());
+    }).catchError((e) {
+      emit(GetAllUsersDataStateBad(e.toString()));
     });
   }
 }

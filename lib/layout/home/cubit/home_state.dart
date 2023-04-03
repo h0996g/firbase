@@ -15,6 +15,16 @@ class GetUserDataStateBad extends HomeState {
   GetUserDataStateBad(this.error);
 }
 
+class LodinGetAllUsersDataState extends HomeState {}
+
+class GetAllUsersDataStateGood extends HomeState {}
+
+class GetAllUsersDataStateBad extends HomeState {
+  final error;
+
+  GetAllUsersDataStateBad(this.error);
+}
+
 class ChangeButtonNavStateGood extends HomeState {}
 
 class ChangeButtonNavStateToAddPostsGood extends HomeState {}
