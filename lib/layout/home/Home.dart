@@ -37,8 +37,8 @@ class Home extends StatelessWidget {
                 icon: Icon(IconBroken.Paper_Upload),
               ),
               BottomNavigationBarItem(
-                label: 'Users',
-                icon: Icon(IconBroken.Location),
+                label: 'Search',
+                icon: Icon(IconBroken.Search),
               ),
               BottomNavigationBarItem(
                 label: 'Setting',
@@ -63,7 +63,7 @@ class Home extends StatelessWidget {
             ),
             IconButton(
               icon: const Icon(
-                IconBroken.Search,
+                Icons.light_mode_outlined,
                 color: Colors.black,
               ),
               onPressed: () {},

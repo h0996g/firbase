@@ -8,7 +8,7 @@ import 'package:firbase/models/UserModel.dart';
 import 'package:firbase/modules/chats/chats.dart';
 import 'package:firbase/modules/feeds/feeds.dart';
 import 'package:firbase/modules/posts/posts.dart';
-import 'package:firbase/modules/users/users.dart';
+import 'package:firbase/modules/users/search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -24,17 +24,17 @@ class HomeCubit extends Cubit<HomeState> {
   UserModel? userModel;
   int currentIndex = 0;
   List<Widget> userScreen = const [
-    Feeds(),
+    Posts(),
     Chats(),
     AddPost(),
-    Users(),
+    Search(),
     Setting()
   ];
   List<String> appbarScreen = const [
-    'Feeds',
+    'GDG',
     'Chats',
     'AddPost',
-    'Users',
+    'Search',
     'Settings'
   ];
 

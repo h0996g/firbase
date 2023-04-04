@@ -6,8 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../shared/styles/icon/iconBroken.dart';
 
-class Feeds extends StatelessWidget {
-  const Feeds({Key? key}) : super(key: key);
+class Posts extends StatelessWidget {
+  const Posts({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -49,32 +49,53 @@ class Feeds extends StatelessWidget {
                   //     ),
                   //   ),
                   //  !
-                  const Card(
-                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                      elevation: 5.0,
-                      margin: EdgeInsets.all(
-                        8.0,
+                  // const Card(
+                  //     clipBehavior: Clip.antiAliasWithSaveLayer,
+                  //     elevation: 5.0,
+                  //     margin: EdgeInsets.all(
+                  //       8.0,
+                  //     ),
+                  //     child: Stack(
+                  //       alignment: AlignmentDirectional.bottomEnd,
+                  //       children: [
+                  //         Image(
+                  //           image: NetworkImage(
+                  //             'https://img.freepik.com/premium-photo/people-holding-speech-bubbles_34048-1043.jpg?w=1060',
+                  //           ),
+                  //           fit: BoxFit.cover,
+                  //           height: 200.0,
+                  //           width: double.infinity,
+                  //         ),
+                  //         Padding(
+                  //           padding: EdgeInsets.all(8.0),
+                  //           child: Text(
+                  //             'communicate with friends',
+                  //             style: TextStyle(color: Colors.white),
+                  //           ),
+                  //         )
+                  //       ],
+                  //     )),
+                  Row(
+                    children: [
+                      CircleAvatar(
+                        backgroundColor: Colors.transparent,
+                        radius: 40,
+                        child: IconButton(
+                            splashRadius: double.minPositive,
+                            iconSize: 50,
+                            onPressed: () {},
+                            icon: const Icon(
+                              IconBroken.Plus,
+                              // size: 40,
+                            )),
                       ),
-                      child: Stack(
-                        alignment: AlignmentDirectional.bottomEnd,
-                        children: [
-                          Image(
-                            image: NetworkImage(
-                              'https://img.freepik.com/premium-photo/people-holding-speech-bubbles_34048-1043.jpg?w=1060',
-                            ),
-                            fit: BoxFit.cover,
-                            height: 200.0,
-                            width: double.infinity,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Text(
-                              'communicate with friends',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          )
-                        ],
-                      )),
+                      CircleAvatar(
+                        radius: 30,
+                        backgroundImage: NetworkImage(
+                            HomeCubit.get(context).userModel!.img!),
+                      )
+                    ],
+                  ),
                   const SizedBox(
                     height: 10,
                   ),
@@ -178,17 +199,23 @@ Widget itemBuilder(PostModel model, context, index) => Card(
                     },
                     icon: const Icon(
                       IconBroken.Heart,
-                      color: Colors.amber,
+                      color: Colors.grey,
                     )),
                 Text('${HomeCubit.get(context).countLikeList[index]}'),
-                const Spacer(),
                 IconButton(
                     onPressed: () {},
                     icon: const Icon(
                       IconBroken.Chat,
-                      color: Colors.amber,
+                      color: Colors.grey,
                     )),
-                const Text('0 comment')
+                InkWell(onTap: () {}, child: const Text('0 comment')),
+                const Spacer(),
+                IconButton(
+                    onPressed: () {},
+                    icon: const Icon(
+                      IconBroken.Upload,
+                      color: Colors.grey,
+                    )),
               ],
             ),
             const Divider(

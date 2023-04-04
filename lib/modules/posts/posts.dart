@@ -184,9 +184,16 @@ class AddPost extends StatelessWidget {
                                 Text('Add Photos'),
                               ],
                             ))),
+                    const Spacer(),
                     Expanded(
                         child: TextButton(
-                            onPressed: () {}, child: const Text('# tags'))),
+                            onPressed: () {},
+                            child: const Row(
+                              children: [
+                                Icon(IconBroken.Video),
+                                Text(' Add Video'),
+                              ],
+                            ))),
                   ],
                 )
               ],
