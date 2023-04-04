@@ -38,7 +38,7 @@ class EditeProfile extends StatelessWidget {
                     _homeCubit.resetWhenReturnFromUpdate();
                   }
                 },
-                title: 'Edit Profile',
+                title: const Text('Edit Profile'),
                 actions: [
                   TextButton(
                       onPressed: () {

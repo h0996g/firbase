@@ -85,4 +85,22 @@ class LikePostsStateBad extends HomeState {
   LikePostsStateBad(this.error);
 }
 
-class FF extends HomeState {}
+// class LodinSendAndReciveMessageDataState extends HomeState {}
+
+class SendMessageDataStateGood extends HomeState {}
+
+class SendMessageDataStateBad extends HomeState {
+  final error;
+
+  SendMessageDataStateBad(this.error);
+}
+
+class ReciveMessageDataStateGood extends HomeState {}
+
+class ReciveMessageDataStateBad extends HomeState {
+  final error;
+
+  ReciveMessageDataStateBad(this.error);
+}
+
+class GetMessageDataStateGood extends HomeState {}

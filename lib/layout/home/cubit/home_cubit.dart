@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firbase/models/PostModel.dart';
+import 'package:firbase/models/messageModel.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firbase/models/UserModel.dart';
 import 'package:firbase/modules/chats/chats.dart';
@@ -272,7 +273,11 @@ class HomeCubit extends Cubit<HomeState> {
   //tjib post w postId w like ta3hom tani
   void getPosts() {
     emit(LodinGetPostsState());
-    FirebaseFirestore.instance.collection("posts").get().then((value) async {
+    FirebaseFirestore.instance
+        .collection("posts")
+        .orderBy('dateTime')
+        .get()
+        .then((value) async {
       for (var element in value.docs) {
         await element.reference.collection('likes').get().then((value) {
           //! await hadi bh y3mr liste li kynin 9bl mydir emit(GetPostsStateGood()) bh tjina f Screen
@@ -309,6 +314,7 @@ class HomeCubit extends Cubit<HomeState> {
     userModel = null;
     postModelList = [];
     usersModelList = [];
+    messageModelList = [];
   }
 
   List<UserModel> usersModelList = [];
@@ -324,6 +330,65 @@ class HomeCubit extends Cubit<HomeState> {
       emit(GetAllUsersDataStateGood());
     }).catchError((e) {
       emit(GetAllUsersDataStateBad(e.toString()));
+    });
+  }
+
+  void sendMessage({required String otheruser, String? message}) {
+    MessageModel model = MessageModel(
+        dateTime: DateTime.now().toString(),
+        resiverId: otheruser,
+        senderId: userModel!.uid,
+        text: message);
+    // emit(LodinSendAndReciveMessageDataState());
+
+    //set my chat messeger (lmn b3et le usermodel.uid ta3i)
+
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(userModel!.uid)
+        .collection('chats')
+        .doc(otheruser)
+        .collection('messages')
+        // .doc()
+        .add(model.toMap())
+        .then((value) {
+      emit(SendMessageDataStateGood());
+    }).catchError((e) {
+      emit(SendMessageDataStateBad(e.toString()));
+    });
+    // set reciver chats
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(otheruser)
+        .collection('chats')
+        .doc(userModel!.uid)
+        .collection('messages')
+        // .doc()
+        .add(model.toMap())
+        .then((value) {
+      emit(ReciveMessageDataStateGood());
+    }).catchError((e) {
+      emit(ReciveMessageDataStateBad(e.toString()));
+    });
+  }
+
+  List<MessageModel> messageModelList = [];
+  void getMessage({required String reciverUid}) {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(userModel!.uid)
+        .collection('chats')
+        .doc(reciverUid)
+        .collection('messages')
+        .orderBy('dateTime')
+        .snapshots()
+        .listen((event) {
+      messageModelList = [];
+
+      for (var element in event.docs) {
+        messageModelList.add(MessageModel.fromJson(element.data()));
+      }
+      emit(GetMessageDataStateGood());
     });
   }
 }

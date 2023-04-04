@@ -24,7 +24,7 @@ class AddPost extends StatelessWidget {
                 navigatAndFinish(context: context, page: const Home());
                 _homeCubit.resetWhenAddPost();
               },
-              title: "Create Post",
+              title: const Text('Create Post'),
               actions: [
                 TextButton(
                   onPressed: () {

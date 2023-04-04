@@ -1,6 +1,8 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:firbase/layout/home/cubit/home_cubit.dart';
 import 'package:firbase/models/UserModel.dart';
+import 'package:firbase/modules/chatDetails/chatDetails.dart';
+import 'package:firbase/shared/components/components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -17,7 +19,9 @@ class Chats extends StatelessWidget {
             return ListView.separated(
                 physics: const BouncingScrollPhysics(),
                 itemBuilder: (context, index) => itemUserBuilder(
-                    HomeCubit.get(context).usersModelList[index], index),
+                    HomeCubit.get(context).usersModelList[index],
+                    index,
+                    context),
                 separatorBuilder: ((context, index) => Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: Container(
@@ -40,8 +44,10 @@ class Chats extends StatelessWidget {
   }
 }
 
-itemUserBuilder(UserModel model, index) => InkWell(
-      onTap: () {},
+itemUserBuilder(UserModel model, index, context) => InkWell(
+      onTap: () {
+        navigatAndReturn(context: context, page: ChatDetails(model: model));
+      },
       child: Padding(
         // decoration: BoxDecoration(),
         padding: const EdgeInsets.all(20),

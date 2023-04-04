@@ -105,17 +105,20 @@ void navigatAndFinish({required context, required page}) =>
         MaterialPageRoute(builder: (context) => page), (route) => false);
 
 PreferredSizeWidget defaultAppBar(
-        {String? title,
+        {
+        // String? title,
         List<Widget>? actions,
         bool canreturn = true,
+        Widget? title,
         // Function()? whenBack,
         Function()? onPressed}) =>
     AppBar(
+        titleSpacing: 0,
         leading: IconButton(
             onPressed: onPressed,
             icon: const Icon(
               IconBroken.Arrow___Left_2,
               color: Colors.black,
             )),
-        title: Text(title!),
+        title: title,
         actions: actions);
